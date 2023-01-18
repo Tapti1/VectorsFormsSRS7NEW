@@ -13,6 +13,27 @@ namespace VectorsForms
         private int _v1_id, _v2_id;
         private Vector? _v1, _v2;
 
+        public int v1_id
+        {
+            get { return _v1_id; }
+
+            set { //если id меняем, то v1 уже не прогружен
+                _v1_id = value;
+                _v1 = null; 
+            }
+        }
+
+        public int v2_id
+        {
+            get { return _v2_id; }
+
+            set
+            { //если id меняем, то v1 уже не прогружен
+                _v2_id = value;
+                _v2 = null;
+            }
+        }
+
         public Vector? v1
         {
             set
@@ -21,26 +42,34 @@ namespace VectorsForms
             }
             get
             {
-                 
-                if (_v1_id > 0)
-                {                        
-                     Mapper mapper = new Mapper("vectors");
-                     _v1 = (Vector)mapper.GetById(_v1_id);
-                     Console.WriteLine($"Лениво загружаем Вектор {_v1_id}");
+                //если объект не прогружен
+                if (_v1 == null)
+                {
+                    //пытаемся его прогрузить
+                    if (v1_id > 0)
+                    {
+                        Mapper mapper = new Mapper("vectors");
+                        _v1 = (Vector)mapper.GetById(v1_id);
+                        Console.WriteLine($"Лениво загружаем Вектор {v1_id}");
+                    }
+                    else
+                    {
+                        if (v1_id != 0)
+                        {
+                            //id неверный
+                            throw new Exception("Не могу загрузить объект");
+                        }
+                        else
+                        {
+                            //объект не из базы, создан в программе
+                            _v1 = null;
+                        }
+                    }
                 }
                 else
                 {
-                     if (_v1_id != 0)
-                     {
-                         //id неверный
-                         throw new Exception("Не могу загрузить объект");
-                     }
-                     else
-                     {
-                          //объект не из базы, создан в программе
-                          _v1 = null;
-                     }
-                }                           
+                    Console.WriteLine($"Уже лениво загружен Вектор {v1_id}");
+                }
                 return _v1;
             }
         }
@@ -53,25 +82,34 @@ namespace VectorsForms
             }
             get
             {
+                //если объект не прогружен
+                if (_v2 == null)
+                {
+                    //пытаемся его прогрузить
 
-                if (_v2_id > 0)
-                {
-                    Mapper mapper = new Mapper("vectors");
-                    _v2 = (Vector)mapper.GetById(_v2_id);
-                    Console.WriteLine($"Лениво загружаем Вектор {_v2_id}");
-                }
-                else
-                {
-                    if (_v2_id != 0)
+                    if (_v2_id > 0)
                     {
-                        //id неверный
-                        throw new Exception("Не могу загрузить объект");
+                        Mapper mapper = new Mapper("vectors");
+                        _v2 = (Vector)mapper.GetById(_v2_id);
+                        Console.WriteLine($"Лениво загружаем Вектор {_v2_id}");
                     }
                     else
                     {
-                        //объект не из базы, создан в программе
-                        _v2 = null;
+                        if (_v2_id != 0)
+                        {
+                            //id неверный
+                            throw new Exception("Не могу загрузить объект");
+                        }
+                        else
+                        {
+                            //объект не из базы, создан в программе
+                            _v2 = null;
+                        }
                     }
+                }
+                else
+                {
+                    Console.WriteLine($"Уже лениво загружен Вектор {v2_id}");
                 }
                 return _v2;
             }
