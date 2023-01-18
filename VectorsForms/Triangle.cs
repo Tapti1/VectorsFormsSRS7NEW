@@ -10,15 +10,80 @@ namespace VectorsForms
 {
     internal class Triangle:DomainObject
     {
-        public Vector v1, v2;
+        private int _v1_id, _v2_id;
+        private Vector? _v1, _v2;
+
+        public Vector? v1
+        {
+            set
+            {
+                _v1=value;
+            }
+            get
+            {
+                 
+                if (_v1_id > 0)
+                {                        
+                     Mapper mapper = new Mapper("vectors");
+                     _v1 = (Vector)mapper.GetById(_v1_id);
+                     Console.WriteLine($"Лениво загружаем Вектор {_v1_id}");
+                }
+                else
+                {
+                     if (_v1_id != 0)
+                     {
+                         //id неверный
+                         throw new Exception("Не могу загрузить объект");
+                     }
+                     else
+                     {
+                          //объект не из базы, создан в программе
+                          _v1 = null;
+                     }
+                }                           
+                return _v1;
+            }
+        }
+
+        public Vector? v2
+        {
+            set
+            {
+                _v2 = value;
+            }
+            get
+            {
+
+                if (_v2_id > 0)
+                {
+                    Mapper mapper = new Mapper("vectors");
+                    _v2 = (Vector)mapper.GetById(_v2_id);
+                    Console.WriteLine($"Лениво загружаем Вектор {_v2_id}");
+                }
+                else
+                {
+                    if (_v2_id != 0)
+                    {
+                        //id неверный
+                        throw new Exception("Не могу загрузить объект");
+                    }
+                    else
+                    {
+                        //объект не из базы, создан в программе
+                        _v2 = null;
+                    }
+                }
+                return _v2;
+            }
+        }
 
         public Triangle(List<string> _params) : base(_params) { }
 
         protected override void LoadObject(List<string> _params)
         {
             Mapper mapper = new Mapper("vectors");
-            v1 = (Vector)mapper.GetById(Convert.ToInt32(_params[1]));
-            v2 = (Vector)mapper.GetById(Convert.ToInt32(_params[2]));
+            _v1_id = Convert.ToInt32(_params[1]);
+            _v2_id = Convert.ToInt32(_params[2]);
         }
         public override string InsertObjectString()
         {

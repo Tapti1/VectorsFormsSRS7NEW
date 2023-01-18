@@ -20,12 +20,12 @@ namespace VectorsForms
         {
             if (_objectsMap.ContainsKey(object_id))
             {
-                Console.WriteLine("Получаем ссылку на объект из списка");
+                //Console.WriteLine("Получаем ссылку на объект из списка");
                 return _objectsMap[object_id];
             }
             else
             {
-                Console.WriteLine("В списке объекта нет");
+                //Console.WriteLine("В списке объекта нет");
                 return null;
             }
         }
